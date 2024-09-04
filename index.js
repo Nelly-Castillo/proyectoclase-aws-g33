@@ -3,34 +3,79 @@ const express = require('express')
 const app = express()
 const port = 3000
 
+const { getContact } = require('./src/controllers/contacs')
+
 app.use(express.json())
 
-// get -> obtener datos
-app.get('/', (req, res) => {
-  res.send('Hello World!')
+// Método GET
+app.get('/contactos', getContact)
+
+// Método POST
+app.post('/contactos', async(req, res) => {
+
+	try {
+		// Codigo para acceder a la bd
+		const { nombre, numero } = req.body
+		console.log(nombre, numero)
+	
+		res.status(201).send({
+			status: "correcto",
+			message: "Creado correctamente"
+		})
+	} catch (error) {
+		res.status(503).send({ 
+			status: "hay un problema", 
+			message: error
+		})
+	}
+
 })
 
-// post -> enviar datos
-app.post('/datos', (req, res) => {
+// Método GET params
+app.get('/contactos/:id', async(req, res) => {
 
-    const { nombre } = req.body
-    console.log(JSON.stringify(req.body))
+	try {
+		const { id } = req.params
 
-    res.send('ok')
+		console.log(id)
+
+		res.status(200).send({
+			status: "ok todo correcto",
+			message: "obtenido correctamente",
+			data: {
+				"nombre": "JOSE",
+				"numero": 9992278922
+			}
+		})
+	} catch (error) {
+		res.status(500).send({ 
+			status: "hay un problema", 
+			message: error
+		})
+	}
 })
 
-// Tomando datos del params
-app.get('/datos/:id', (req, res) => {
+// Método GET queries
+app.get('/searchcontactos', async(req, res) => {
 
-    console.log(JSON.stringify(req.params))
-    res.send('ok')
-})
+	try {
+		// Codigo para acceder a la BD
+		console.log(JSON.stringify(req.query))
+		res.status(200).send({
+			status: "obtenido correctamente",
+			message: "si se encontró algo",
+			data: [
+				{"id":1, "nombre": "Jose", "numero": 6271822},
+				{"id":2,"nombre": "JOSE", "numero": 9992278922} 
+			]
+		})
+	} catch (error) {
+		res.status(500).send({ 
+			status: "hay un problema", 
+			message: error
+		})
+	}
 
-// Tomando datos del query
-app.get('/datosdos', (req, res) => {
-
-    console.log(JSON.stringify(req.query))
-    res.send('ok')
 })
 
 
