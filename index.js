@@ -5,7 +5,9 @@ const app = express()
 require('dotenv').config()
 const port = process.env.PORT
 
-const ContactsRoutes = require('./src/routes/contactRoutes')
+const ContactsRoutes = require('./src/routes/contactRoutes');
+const ProductsRoutes = require('./src/routes/productRoutes')
+
 
 var corsOptions = {
   origin: '*',
@@ -17,6 +19,8 @@ app.use(cors(corsOptions))
 
 // RUTA DE CONTACTOS
 app.use('/contactos', ContactsRoutes)
+app.use('/products', ProductsRoutes)
+
 
 
 app.listen(port, () => {
