@@ -3,26 +3,22 @@ const cors = require('cors')
 
 const app = express()
 require('dotenv').config()
-const port = process.env.PORT
+const port = process.env.PORT || 3000;
 
 const ContactsRoutes = require('./src/routes/contactRoutes');
 const ProductsRoutes = require('./src/routes/productRoutes')
 
+// var corsOptions = {
+//   origin: '*',
+//   optionsSuccessStatus: 200 // some legacy browsers (IE11, various SmartTVs) choke on 204
+// }
 
-var corsOptions = {
-  origin: '*',
-  optionsSuccessStatus: 200 // some legacy browsers (IE11, various SmartTVs) choke on 204
-}
-
-app.use(express.json())
-app.use(cors(corsOptions))
+app.use(express.json());
+app.use(cors());
 
 // RUTA DE CONTACTOS
 app.use('/contactos', ContactsRoutes)
 app.use('/products', ProductsRoutes)
-
-
-
 app.listen(port, () => {
   console.log(`Example app listening on port ${port}`)
 })
